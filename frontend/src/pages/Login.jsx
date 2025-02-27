@@ -1,0 +1,98 @@
+import { useContext, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useUserApi } from "../hooks/useUserApi";
+import { AuthContext } from "../context/AuthContext";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+
+const Login = () => {
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useUserApi();
+  const { login: authLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await login(credentials);
+    if (response.success) {
+      toast.success(response.message);
+      authLogin(response.token);
+      navigate("/");
+    } else {
+      toast.error(response.message);
+    }
+  };
+  return (
+    <div
+      className="flex items-center justify-center min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: "url('/src/assets/background_img.jpg')" }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        className="p-10 bg-white/60 rounded shadow-md w-96 space-y-6 backdrop-blur-sm"
+      >
+        <h1 className="text-2xl font-bold text-center">User Login</h1>
+        <div className="relative z-0 w-full group">
+          <input
+            type="email"
+            name="email"
+            placeholder=" "
+            value={credentials.email}
+            onChange={handleChange}
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 outline-none bg-transparent border-0 border-b-2 border-gray-400 focus:border-blue-600 peer"
+          />
+          <label className="absolute text-sm text-gray-600 transform -translate-y-6 scale-75 top-3 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
+            Email
+          </label>
+        </div>
+        <div className="relative z-0 w-full group">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder=" "
+            value={credentials.password}
+            onChange={handleChange}
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 outline-none bg-transparent border-0 border-b-2 border-gray-400 focus:border-blue-600 peer"
+          />
+          <label className="absolute text-sm text-gray-600 transform -translate-y-6 scale-75 top-3 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
+            Password
+          </label>
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="absolute right-0 top-3 text-gray-500"
+          >
+            {showPassword ? (
+              <MdVisibilityOff size={18} />
+            ) : (
+              <MdVisibility size={18} />
+            )}
+          </button>
+        </div>
+        <button className="w-full px-4 py-2 mt-2 bg-blue-500 text-white hover:bg-blue-800 transition-colors duration-300 ease-linear rounded cursor-pointer">
+          Login
+        </button>
+        <div className="italic text-center">
+          <span className="text-gray-600">Don't have an account?</span>
+          <Link
+            to="/register"
+            className="text-blue-500 hover:text-blue-800 hover:underline transition-colors duration-300 ease-linear ml-1"
+          >
+            Register
+          </Link>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default Login;
