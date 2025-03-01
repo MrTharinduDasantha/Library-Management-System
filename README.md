@@ -1,4 +1,4 @@
-# Event Planning System
+# Library Management System
 
 A simple library management system built using the MERN (MongoDB, Express.js, React.js, Node.js) stack. This application allows admins to manage books and users to view, search, and request books for download with notification features.
 
@@ -7,7 +7,7 @@ A simple library management system built using the MERN (MongoDB, Express.js, Re
 
 Click the link below to see the demonstration of the Library Management System.
 
-Link 👉 https://drive.google.com/file/d/1-IY0wHUNpT9FVWahgqEvxbOD0KpoQjCp/view?usp=sharing 👈
+Link 👉 https://drive.google.com/file/d/1CLe_hFuexZz6_2FP0f82Rv3npHdK6lj5/view?usp=sharing 👈
 
 
 ## Features
